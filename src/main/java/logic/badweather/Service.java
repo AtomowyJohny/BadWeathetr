@@ -41,6 +41,19 @@ public class Service {
         return bufferedReader.readLine();
     }
 
+    public String getTemp(String cityName) throws IOException, ParseException {
+
+        String weatherString = getWeather(cityName);
+
+        JSONObject jsonObject = getJsonFromString(weatherString);
+        JSONArray jsonArray = (JSONArray) jsonObject.get("main");
+
+
+        System.out.println(jsonObject.keySet());
+        System.out.println(jsonObject);
+        return "temp";
+    }
+
     public double getRateFor(String currencyCode) throws IOException, ParseException {  //zwraca kurs waluty danego kraju wobec waluty podanej jako argument,
 
         URL url = new URL(urlNbp + currencyCode + "/?format=json");

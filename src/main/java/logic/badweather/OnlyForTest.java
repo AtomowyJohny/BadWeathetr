@@ -38,6 +38,7 @@ public class OnlyForTest {
         // System.out.println(s.getJsonFromString(s.getWeather("Warsaw")).get("visibility"));
 
 
+        s.getTemp("Warsaw");
 
 
 /*
@@ -60,7 +61,7 @@ public class OnlyForTest {
 
 */
 
-        s.getNBPRate();
+      //  s.getNBPRate();
 
     }
 }
