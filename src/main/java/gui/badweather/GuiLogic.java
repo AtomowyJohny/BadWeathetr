@@ -10,6 +10,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import logic.badweather.Service;
+import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicReference;
@@ -23,7 +24,7 @@ public class GuiLogic extends Application {
     private final String urlWiki = "https://en.wikipedia.org/wiki/";
     private AtomicReference<String> cityName = new AtomicReference<>("Warsaw");
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) throws IOException, ParseException {
 
         Service s = new Service(cityName.toString());
 
@@ -38,21 +39,21 @@ public class GuiLogic extends Application {
 
         WebView browser = new WebView();
         Label tempDesc = new Label();
-        tempDesc.setText("Temp. in: " + cityName);
+        tempDesc.setText("Temp. in: " + cityName+" "+s.getTemp(cityName.toString())+"(°C)");
 
         Label tempReading = new Label();
-        tempReading.setText(s.getWeather(cityName.toString()));
+        //tempReading.setText();
 
 
         Button changeData = new Button("Change data");
         changeData.setOnAction(e -> {
           cityName.set(textArea.getText());
-            //System.out.println(textArea.getText());
+
             browser.getEngine().load(urlWiki+cityName);
-            tempDesc.setText("Temp. in: " + cityName);
+           // tempDesc.setText("Temp. in: " + cityName);
             try {
-                tempReading.setText(s.getWeather(cityName.toString()));
-            } catch (IOException ex) {
+                tempDesc.setText("Temp. in: " + cityName+" "+s.getTemp(cityName.toString())+"(°C)");
+            } catch (IOException | ParseException ex) {
                 ex.printStackTrace();
             }
         });
@@ -74,6 +75,8 @@ public class GuiLogic extends Application {
 
         stage.setScene(scene);
         stage.show();
+
+
 
 
     }

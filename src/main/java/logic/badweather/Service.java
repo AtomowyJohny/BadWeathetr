@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.Currency;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -20,8 +19,8 @@ public class Service {
     private final String urlNbp = "https://api.nbp.pl/api/exchangerates/rates/a/";
     private final String urlOpenWeather = "https://api.openweathermap.org/data/2.5/weather?q=";
     private final JSONParser jsonParser = new JSONParser();
-    private Locale locale;
     public String countryName;
+   // private Locale locale;
 
 
     public Service(String countryName) {
@@ -30,7 +29,7 @@ public class Service {
 
     public void setCountryName(String countryName) {
         this.countryName = countryName;
-       // locale =
+        // locale =
     }
 
     public String getWeather(String cityName) throws IOException {
@@ -45,13 +44,17 @@ public class Service {
 
         String weatherString = getWeather(cityName);
 
-        JSONObject jsonObject = getJsonFromString(weatherString);
-        JSONArray jsonArray = (JSONArray) jsonObject.get("main");
+        JSONObject jsonWeather = getJsonFromString(weatherString);
+        JSONObject jsonMain = (JSONObject) jsonWeather.get("main");
 
+        double tempFahrenheit = Double.parseDouble(jsonMain.get("temp").toString());
 
-        System.out.println(jsonObject.keySet());
-        System.out.println(jsonObject);
-        return "temp";
+        double tempCelsius = tempFahrenheit / 32;
+
+        //tempCelsius =Double.parseDouble(new DecimalFormat("#.#").format(tempCelsius));
+        System.out.println(tempCelsius);
+
+        return String.valueOf(tempCelsius);
     }
 
     public double getRateFor(String currencyCode) throws IOException, ParseException {  //zwraca kurs waluty danego kraju wobec waluty podanej jako argument,
@@ -68,7 +71,7 @@ public class Service {
 
 
     public double getNBPRate() throws Exception {  //zwraca kurs złotego wobec waluty danego kraju   (woec kraju który przegładam)
-            //https://stackoverflow.com/questions/14155049/iso2-country-code-from-country-name
+        //https://stackoverflow.com/questions/14155049/iso2-country-code-from-country-name
         // na podstawie coutry name ustalić wartość kursu wobec aktualnie przeglądanej sttrony na wiki
 
         Map<String, String> countries = new HashMap<>();
