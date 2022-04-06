@@ -8,7 +8,7 @@ public class OnlyForTest {
 
         System.out.println(s.getTemp("Warsaw"));
 
-        System.out.println(s.getNBPRate());
+      //  System.out.println(s.getNBPRate());
 
 
     }

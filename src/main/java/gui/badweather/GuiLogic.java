@@ -17,65 +17,103 @@ import java.util.concurrent.atomic.AtomicReference;
 
 
 public class GuiLogic extends Application {
+    private final String urlWiki = "https://en.wikipedia.org/wiki/";
+    private final AtomicReference<String> cityName = new AtomicReference<>("Warsaw");
+    private static Service s = Main.getS();
+
     public void starGui() {
+
         launch();
     }
 
-    private final String urlWiki = "https://en.wikipedia.org/wiki/";
-    private AtomicReference<String> cityName = new AtomicReference<>("Warsaw");
     @Override
-    public void start(Stage stage) throws IOException, ParseException {
+    public void start(Stage stage) throws Exception {
 
-        Service s = new Service(cityName.toString());
+
 
         BorderPane root = new BorderPane();
-
         Scene scene = new Scene(root, 840, 660);
         stage.setTitle("WeatherMoney");
 
-        TextArea textArea = new TextArea();
-        textArea.setPrefSize(150.0, 400.0);
-
-
         WebView browser = new WebView();
-        Label tempDesc = new Label();
-        tempDesc.setText("Temp. in: " + cityName+" "+s.getTemp(cityName.toString())+"(°C)");
-
-        Label tempReading = new Label();
 
 
-        Button changeData = new Button("Change data");
-        changeData.setOnAction(e -> {
-          cityName.set(textArea.getText());
+        TextArea textAreaCity = new TextArea();
+        textAreaCity.setMaxHeight(20);
 
-            browser.getEngine().load(urlWiki+cityName);
-            tempDesc.setText("Temp. in: " + cityName);
+        TextArea textAreaCurrency = new TextArea();
+        textAreaCity.setMaxHeight(20);
+
+        TextArea textAreaCountry = new TextArea();
+        textAreaCity.setMaxHeight(20);
+
+
+        Label labelTempDesc = new Label();
+        labelTempDesc.setText("Temp. in: " + cityName + " " + s.getTemp(cityName.toString()) + "(°C)");
+        Label labelTempReading = new Label();
+
+        Button changeCity = new Button("Change city");
+        changeCity.setOnAction(e -> {
+            cityName.set(textAreaCity.getText());
+
+            browser.getEngine().load(urlWiki + cityName);
+            labelTempDesc.setText("Temp. in: " + cityName);
+
             try {
-                tempDesc.setText("Temp. in: " + cityName+" "+s.getTemp(cityName.toString())+"(°C)");
+                labelTempDesc.setText("Temp. in: " + cityName + " " + s.getTemp(cityName.toString()) + "(°C)");
+            } catch (IOException | ParseException ex) {
+                ex.printStackTrace();
+            }
+
+        });
+
+
+        Label labelCurrency = new Label();
+        labelCurrency.setText("Set currency");
+
+        Button changeCurrency = new Button("Change Currency");
+        changeCurrency.setOnAction(e -> {
+            try {
+                labelCurrency.setText("Exchange rate for " + textAreaCurrency.getText()
+                        + " is:\n" + (s.getRateFor(textAreaCurrency.getText())));
             } catch (IOException | ParseException ex) {
                 ex.printStackTrace();
             }
         });
 
+        Label labelNbpRate = new Label();
+        labelNbpRate.setText("NbpRate: " + s.getNBPRate());
+
+        Button changeCountry = new Button("Change Country");
+        changeCountry.setOnAction(e -> {
+          s.setCountryName(textAreaCountry.getText());
+            try {
+                System.out.println("drugi taktyczny print");
+                labelNbpRate.setText("NbpRate: " + s.getNBPRate());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+            System.out.println("taktyczny print");
+        });
 
         VBox box = new VBox();
+        box.setMaxWidth(150);
+
+        box.getChildren().addAll(changeCity, textAreaCity, labelTempDesc, labelTempReading);
+
+        box.getChildren().addAll(changeCurrency, textAreaCurrency, labelCurrency);
+
+        box.getChildren().addAll(changeCountry, textAreaCountry,labelNbpRate);
 
 
-
-
-        box.getChildren().addAll(changeData,textArea, tempDesc,tempReading);
-
-
-
-        browser.getEngine().load(urlWiki+cityName);
+        browser.getEngine().load(urlWiki + cityName);
         root.setCenter(browser);
         root.setLeft(box);
 
 
         stage.setScene(scene);
         stage.show();
-
-
 
 
     }

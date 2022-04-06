@@ -1,6 +1,5 @@
 package logic.badweather;
 
-import javafx.scene.shape.CubicCurve;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -12,10 +11,10 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
+import java.util.Arrays;
 import java.util.Currency;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Service {
     private final String keyOpenWeather = "&appid=5928457613c5d7cbfc8b2c0564c44268";
@@ -23,7 +22,6 @@ public class Service {
     private final String urlOpenWeather = "https://api.openweathermap.org/data/2.5/weather?q=";
     private final JSONParser jsonParser = new JSONParser();
     public String countryName;
-
 
 
     public Service(String countryName) {
@@ -68,19 +66,17 @@ public class Service {
     public double getNBPRate() throws Exception {  //zwraca kurs złotego wobec waluty danego kraju   (woec kraju który przegładam)
         //https://stackoverflow.com/questions/14155049/iso2-country-code-from-country-name
 
-        if (!countryName.equals("Poland")){
+        if (!countryName.equals("Poland")) {
+            countryName = countryName.substring(0,1).toUpperCase() + countryName.substring(1).toLowerCase(Locale.ROOT);
 
-            String countryCode = "PL";
-            for (int i = 0; i < Locale.getISOCountries().length; i++) {
-                Locale.setDefault(Locale.ENGLISH);
-                Locale l = new Locale("", Locale.getISOCountries()[i]);
-                if (l.getDisplayCountry().equals(countryName)) {
-                    countryCode = Locale.getISOCountries()[i];
-                }
-            }
-            String currencyCode = Currency.getInstance(new Locale("", countryCode)).getCurrencyCode();
+            Locale.setDefault(Locale.ENGLISH);
+            String currencyCode = Currency.getInstance(new Locale("", Arrays
+                            .stream(Locale.getISOCountries())
+                            .filter(e -> (new Locale("", e).getDisplayCountry().equals(countryName)))
+                            .collect(Collectors.toList()).get(0)))
+                    .getCurrencyCode();
             return getExchangeRate(currencyCode);
-        }else
+        } else
             return 1.0;
 
     }
