@@ -50,14 +50,13 @@ public class GuiLogic extends Application {
 
         Label labelTempDesc = new Label();
         labelTempDesc.setText("Temp. in: " + cityName + " " + s.getTemp(cityName.toString()) + "(°C)");
-        Label labelTempReading = new Label();
+
 
         Button changeCity = new Button("Change city");
         changeCity.setOnAction(e -> {
-            cityName.set(textAreaCity.getText());
 
+            cityName.set(textAreaCity.getText());
             browser.getEngine().load(urlWiki + cityName);
-            labelTempDesc.setText("Temp. in: " + cityName);
 
             try {
                 labelTempDesc.setText("Temp. in: " + cityName + " " + s.getTemp(cityName.toString()) + "(°C)");
@@ -88,19 +87,19 @@ public class GuiLogic extends Application {
         changeCountry.setOnAction(e -> {
           s.setCountryName(textAreaCountry.getText());
             try {
-                System.out.println("drugi taktyczny print");
+
                 labelNbpRate.setText("NbpRate: " + s.getNBPRate());
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
 
-            System.out.println("taktyczny print");
+
         });
 
         VBox box = new VBox();
         box.setMaxWidth(150);
 
-        box.getChildren().addAll(changeCity, textAreaCity, labelTempDesc, labelTempReading);
+        box.getChildren().addAll(changeCity, textAreaCity, labelTempDesc);
 
         box.getChildren().addAll(changeCurrency, textAreaCurrency, labelCurrency);
 
