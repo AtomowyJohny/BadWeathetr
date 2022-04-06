@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.image.Image;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import logic.badweather.Service;
@@ -19,12 +20,14 @@ import java.util.concurrent.atomic.AtomicReference;
 public class GuiLogic extends Application {
     private final String urlWiki = "https://en.wikipedia.org/wiki/";
     private final AtomicReference<String> cityName = new AtomicReference<>("Warsaw");
-    private static Service s = Main.getS();
+    private static  Service s = Main.getS();
 
     public void starGui() {
 
         launch();
     }
+
+
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -59,7 +62,7 @@ public class GuiLogic extends Application {
             browser.getEngine().load(urlWiki + cityName);
 
             try {
-                labelTempDesc.setText("Temp. in: " + cityName + " " + s.getTemp(cityName.toString()) + "(°C)");
+                labelTempDesc.setText("Temp. in: " + s.correctName(cityName.toString()) + " " + s.getTemp(cityName.toString()) + "(°C)");
             } catch (IOException | ParseException ex) {
                 ex.printStackTrace();
             }
@@ -110,6 +113,7 @@ public class GuiLogic extends Application {
         root.setCenter(browser);
         root.setLeft(box);
 
+        stage.getIcons().add(new Image("C:\\Users\\janek\\OneDrive\\Pulpit\\Studia\\TPO\\Projekty\\2zadprog\\klienci_usług_sieciowych\\BadWeather\\BadWeather.jpg"));
 
         stage.setScene(scene);
         stage.show();

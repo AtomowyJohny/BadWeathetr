@@ -67,8 +67,8 @@ public class Service {
         //https://stackoverflow.com/questions/14155049/iso2-country-code-from-country-name
 
         if (!countryName.equals("Poland")) {
-            countryName = countryName.substring(0,1).toUpperCase() + countryName.substring(1).toLowerCase(Locale.ROOT);
-            //sri lanka
+            countryName = correctName(countryName);
+
             Locale.setDefault(Locale.ENGLISH);
             String currencyCode = Currency.getInstance(new Locale("", Arrays
                             .stream(Locale.getISOCountries())
@@ -79,7 +79,20 @@ public class Service {
         } else
             return 1.0;
 
+    } //sRi lSaNkA
+
+    //Sri Lanka
+    public String correctName(String nameToCorrect) {
+        nameToCorrect = nameToCorrect.toLowerCase();
+        char[] chars = nameToCorrect.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            if (chars[i] == ' ' && i < chars.length - 2)
+                chars[i + 1] -= 'a' - 'A';
+        }
+        nameToCorrect = String.valueOf(chars);
+        return nameToCorrect.substring(0, 1).toUpperCase() + nameToCorrect.substring(1);
     }
+
 
     private double getExchangeRate(String currencyCode) throws IOException, ParseException {
         URL url = new URL(urlNbp + currencyCode + "/?format=json");
