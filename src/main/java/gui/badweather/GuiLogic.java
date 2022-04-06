@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class GuiLogic extends Application {
     private final String urlWiki = "https://en.wikipedia.org/wiki/";
     private final AtomicReference<String> cityName = new AtomicReference<>("Warsaw");
-    private static  Service s = Main.getS();
+    private static Service s = Main.getS();
 
     public void starGui() {
 
@@ -35,7 +35,7 @@ public class GuiLogic extends Application {
 
 
         BorderPane root = new BorderPane();
-        Scene scene = new Scene(root, 840, 660);
+        Scene scene = new Scene(root, 1200, 600);
         stage.setTitle("WeatherMoney");
 
         WebView browser = new WebView();
@@ -100,7 +100,7 @@ public class GuiLogic extends Application {
         });
 
         VBox box = new VBox();
-        box.setMaxWidth(150);
+        box.setMaxWidth(200);
 
         box.getChildren().addAll(changeCity, textAreaCity, labelTempDesc);
 
