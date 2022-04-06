@@ -68,7 +68,7 @@ public class Service {
 
         if (!countryName.equals("Poland")) {
             countryName = countryName.substring(0,1).toUpperCase() + countryName.substring(1).toLowerCase(Locale.ROOT);
-
+            //sri lanka
             Locale.setDefault(Locale.ENGLISH);
             String currencyCode = Currency.getInstance(new Locale("", Arrays
                             .stream(Locale.getISOCountries())
