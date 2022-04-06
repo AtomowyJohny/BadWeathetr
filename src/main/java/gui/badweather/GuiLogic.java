@@ -42,7 +42,6 @@ public class GuiLogic extends Application {
         tempDesc.setText("Temp. in: " + cityName+" "+s.getTemp(cityName.toString())+"(°C)");
 
         Label tempReading = new Label();
-        //tempReading.setText();
 
 
         Button changeData = new Button("Change data");
@@ -50,7 +49,7 @@ public class GuiLogic extends Application {
           cityName.set(textArea.getText());
 
             browser.getEngine().load(urlWiki+cityName);
-           // tempDesc.setText("Temp. in: " + cityName);
+            tempDesc.setText("Temp. in: " + cityName);
             try {
                 tempDesc.setText("Temp. in: " + cityName+" "+s.getTemp(cityName.toString())+"(°C)");
             } catch (IOException | ParseException ex) {
