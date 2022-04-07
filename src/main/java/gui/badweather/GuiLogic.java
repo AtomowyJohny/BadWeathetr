@@ -37,7 +37,6 @@ public class GuiLogic extends Application {
 
         WebView browser = new WebView();
 
-
         TextField textAreaCity = new TextField();
 
         textAreaCity.setPromptText("type city name");
