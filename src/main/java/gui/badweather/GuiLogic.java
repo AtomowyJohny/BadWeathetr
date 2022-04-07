@@ -5,9 +5,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.image.Image;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import logic.badweather.Service;
@@ -18,20 +19,17 @@ import java.util.concurrent.atomic.AtomicReference;
 
 
 public class GuiLogic extends Application {
+    private static final Service s = Main.getS();
     private final String urlWiki = "https://en.wikipedia.org/wiki/";
     private final AtomicReference<String> cityName = new AtomicReference<>("Warsaw");
-    private static Service s = Main.getS();
 
     public void starGui() {
-
         launch();
     }
 
 
-
     @Override
     public void start(Stage stage) throws Exception {
-
 
 
         BorderPane root = new BorderPane();
@@ -41,14 +39,16 @@ public class GuiLogic extends Application {
         WebView browser = new WebView();
 
 
-        TextArea textAreaCity = new TextArea();
-        textAreaCity.setMaxHeight(20);
+        TextField textAreaCity = new TextField();
 
-        TextArea textAreaCurrency = new TextArea();
-        textAreaCity.setMaxHeight(20);
+        textAreaCity.setPromptText("type city name");
 
-        TextArea textAreaCountry = new TextArea();
-        textAreaCity.setMaxHeight(20);
+        TextField textAreaCurrency = new TextField();
+        textAreaCurrency.setPromptText("type iso currency");
+
+        TextField textAreaCountry = new TextField();
+        textAreaCountry.setPromptText("type country name");
+
 
 
         Label labelTempDesc = new Label();
@@ -88,7 +88,7 @@ public class GuiLogic extends Application {
 
         Button changeCountry = new Button("Change Country");
         changeCountry.setOnAction(e -> {
-          s.setCountryName(textAreaCountry.getText());
+            s.setCountryName(textAreaCountry.getText());
             try {
 
                 labelNbpRate.setText("NbpRate: " + s.getNBPRate());
@@ -106,7 +106,7 @@ public class GuiLogic extends Application {
 
         box.getChildren().addAll(changeCurrency, textAreaCurrency, labelCurrency);
 
-        box.getChildren().addAll(changeCountry, textAreaCountry,labelNbpRate);
+        box.getChildren().addAll(changeCountry, textAreaCountry, labelNbpRate);
 
 
         browser.getEngine().load(urlWiki + cityName);
