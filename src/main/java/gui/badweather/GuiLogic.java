@@ -103,7 +103,6 @@ public class GuiLogic extends Application {
 
         });
 
-        gfjdaljfal
 
         VBox box = new VBox();
         box.setMaxWidth(200);
